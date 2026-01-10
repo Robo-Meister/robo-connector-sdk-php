@@ -1,0 +1,15 @@
+{
+  "name": "robo/robo-connector-sdk",
+  "description": "Robo Connector SDK for App Store and external service integrations",
+  "type": "library",
+  "license": "proprietary",
+  "require": {
+    "php": ">=8.2",
+    "ext-curl": "*"
+  },
+  "autoload": {
+    "psr-4": {
+      "Robo\\ConnectorSdk\\": "src/"
+    }
+  }
+}
