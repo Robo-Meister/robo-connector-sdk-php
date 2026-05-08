@@ -8,9 +8,17 @@ final class AppStoreClient
 {
     private ApiClient $client;
 
-    public function __construct(string $baseUrl, string $accessToken)
-    {
-        $this->client = new ApiClient($baseUrl, $accessToken);
+    /**
+     * @param array<string, string> $defaultHeaders
+     */
+    public function __construct(
+        string $baseUrl,
+        string $accessToken,
+        array $defaultHeaders = [],
+        int $timeoutSeconds = 30,
+        int $connectTimeoutSeconds = 10
+    ) {
+        $this->client = new ApiClient($baseUrl, $accessToken, null, $defaultHeaders, $timeoutSeconds, $connectTimeoutSeconds);
     }
 
     /**
@@ -58,7 +66,7 @@ final class AppStoreClient
 
     /**
      * @param array{query?: array<string, scalar|null>, json?: array<string, mixed>|null, headers?: array<string, string>,
-     *              token?: string, product_id?: string, idempotency_key?: string} $options
+     *              token?: string|null, product_id?: string|null, idempotency_key?: string|null, format?: string|null, format_query?: string|null} $options
      * @return array<string, mixed>
      */
     public function request(string $method, string $path, array $options = []): array

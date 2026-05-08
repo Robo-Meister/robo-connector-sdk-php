@@ -10,8 +10,12 @@ final class ApiException extends RuntimeException
     private ?array $response;
 
     /** @param array<string, mixed>|null $response */
-    public function __construct(string $message, private readonly int $statusCode, ?array $response = null)
-    {
+    public function __construct(
+        string $message,
+        private readonly int $statusCode,
+        ?array $response = null,
+        private readonly ?string $rawResponseBody = null,
+    ) {
         parent::__construct($message, $statusCode);
         $this->response = $response;
     }
@@ -25,5 +29,10 @@ final class ApiException extends RuntimeException
     public function getResponse(): ?array
     {
         return $this->response;
+    }
+
+    public function getRawResponseBody(): ?string
+    {
+        return $this->rawResponseBody;
     }
 }
