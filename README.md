@@ -109,6 +109,15 @@ $install = $appStore->installPackage(
 );
 
 $status = $appStore->getInstallJob($install['job_id']);
+
+$checkoutSession = $appStore->createCheckoutSession([
+    'user_id' => 'user-123',
+    'owner_type' => 'workspace',
+    'owner_id' => 'workspace-123',
+    'organisation_id' => 'org-123',
+    'selected_offer_sku' => 'ROBO_CONNECTOR_TICKET_LTD_SOLO',
+    'currency' => 'USD',
+], idempotencyKey: 'checkout-'.bin2hex(random_bytes(8)));
 ```
 
 ## Standard data format selection

@@ -64,6 +64,21 @@ final class AppStoreClient
         return $this->client->request('GET', $path, ['query' => $query]);
     }
 
+
+    /**
+     * Creates a Store checkout session.
+     *
+     * @param array<string, mixed> $payload
+     * @return array<string, mixed>
+     */
+    public function createCheckoutSession(array $payload, ?string $idempotencyKey = null): array
+    {
+        return $this->client->request('POST', '/store/checkout/session', [
+            'json' => $payload,
+            'idempotency_key' => $idempotencyKey,
+        ]);
+    }
+
     /**
      * @param array{query?: array<string, scalar|null>, json?: array<string, mixed>|null, headers?: array<string, string>,
      *              token?: string|null, product_id?: string|null, idempotency_key?: string|null, format?: string|null, format_query?: string|null} $options

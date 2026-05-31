@@ -1,5 +1,5 @@
 {
-  "name": "robo/robo-connector-sdk",
+  "name": "robo-meister/robo-connector-api",
   "description": "Robo Connector SDK for App Store and external service integrations",
   "type": "library",
   "license": "proprietary",
