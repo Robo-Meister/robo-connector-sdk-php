@@ -78,6 +78,35 @@ final class AppStoreClient
             'idempotency_key' => $idempotencyKey,
         ]);
     }
+    /**
+     * Quotes the minimum monthly subscription cost for requested modules.
+     *
+     * When the API token/session already has module access, the backend prices only missing modules;
+     * otherwise it prices every requested module.
+     *
+     * @param list<string> $modules
+     * @return array<string, mixed>
+     */
+    public function quoteModuleSubscriptionPricing(array $modules): array
+    {
+        return $this->client->request('POST', '/api/marketplace/subscription-pricing/modules', [
+            'json' => ['modules' => array_values($modules)],
+        ]);
+    }
+
+    /**
+     * Quotes lifetime-deal options for requested modules.
+     *
+     * @param list<string> $modules
+     * @return array<string, mixed>
+     */
+    public function quoteModuleLtdPricing(array $modules): array
+    {
+        return $this->client->request('POST', '/api/marketplace/subscription-pricing/ltd', [
+            'json' => ['modules' => array_values($modules)],
+        ]);
+    }
+
 
     /**
      * @param array{query?: array<string, scalar|null>, json?: array<string, mixed>|null, headers?: array<string, string>,

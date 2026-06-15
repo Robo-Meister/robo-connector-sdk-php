@@ -356,6 +356,131 @@ final class ExternalServiceClient
         ]);
     }
 
+
+    /**
+     * @param array<string, scalar|null> $query
+     * @return array<string, mixed>
+     */
+    public function searchUniversalInput(array $query = []): array
+    {
+        return $this->client->request('GET', '/universal-input.json', [
+            'query' => $query,
+        ]);
+    }
+
+    /**
+     * @param array<string, mixed> $payload
+     * @return array<string, mixed>
+     */
+    public function suggestUniversalInput(array $payload, ?string $idempotencyKey = null): array
+    {
+        return $this->client->request('POST', '/api/universal-input/suggest', [
+            'json' => $payload,
+            'idempotency_key' => $idempotencyKey,
+        ]);
+    }
+
+    /**
+     * @param array<string, mixed> $payload
+     * @return array<string, mixed>
+     */
+    public function recordUniversalInputHistory(array $payload, ?string $idempotencyKey = null): array
+    {
+        return $this->client->request('POST', '/api/universal-input/history', [
+            'json' => $payload,
+            'idempotency_key' => $idempotencyKey,
+        ]);
+    }
+
+    /**
+     * @param array<string, scalar|null> $query
+     * @return array<string, mixed>
+     */
+    public function listUniversalInputHistory(array $query = []): array
+    {
+        return $this->client->request('GET', '/api/universal-input/history/recent', [
+            'query' => $query,
+        ]);
+    }
+
+    /**
+     * @param array<string, scalar|null> $query
+     * @return array<string, mixed>
+     */
+    public function listUniversalInputExecutionLogs(array $query = []): array
+    {
+        return $this->client->request('GET', '/api/universal-input/execution-logs/recent', [
+            'query' => $query,
+        ]);
+    }
+
+    /**
+     * @param array<string, mixed> $payload
+     * @return array<string, mixed>
+     */
+    public function recordUniversalInputFeedback(array $payload, ?string $idempotencyKey = null): array
+    {
+        return $this->client->request('POST', '/api/universal-input/feedback', [
+            'json' => $payload,
+            'idempotency_key' => $idempotencyKey,
+        ]);
+    }
+
+    /**
+     * @param array<string, scalar|null> $query
+     * @return array<string, mixed>
+     */
+    public function listUniversalInputFeedbackFunnel(array $query = []): array
+    {
+        return $this->client->request('GET', '/api/universal-input/feedback-funnel/recent', [
+            'query' => $query,
+        ]);
+    }
+
+    /**
+     * @param array<string, mixed> $payload
+     * @return array<string, mixed>
+     */
+    public function sendUniversalInputRequest(array $payload, ?string $idempotencyKey = null): array
+    {
+        return $this->client->request('POST', '/api/universal-input/ai', [
+            'json' => $payload,
+            'idempotency_key' => $idempotencyKey,
+        ]);
+    }
+
+    /**
+     * @param array<string, mixed> $payload
+     * @return array<string, mixed>
+     */
+    public function recordUniversalInputActionTelemetry(array $payload, ?string $idempotencyKey = null): array
+    {
+        return $this->client->request('POST', '/api/universal-input/telemetry/action-executed', [
+            'json' => $payload,
+            'idempotency_key' => $idempotencyKey,
+        ]);
+    }
+
+    /**
+     * @param array<string, mixed> $payload
+     * @return array<string, mixed>
+     */
+    public function sendUniversalInputIngestion(string $providerId, string $eventType, string $secret, array $payload): array
+    {
+        $body = json_encode($payload, JSON_UNESCAPED_SLASHES | JSON_THROW_ON_ERROR);
+
+        return $this->client->request('POST', '/v1/ingest', [
+            'json' => $payload,
+            'headers' => [
+                'X-Provider-Id' => $providerId,
+                'X-Event-Type' => $eventType,
+                'X-Signature' => hash_hmac('sha256', $body, $secret),
+            ],
+            'token' => null,
+            'product_id' => null,
+        ]);
+    }
+
     /** @return array<string, mixed> */
     public function pingFlowBeacon(): array
     {

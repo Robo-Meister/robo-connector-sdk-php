@@ -50,12 +50,12 @@ final class ApiClient
             }
         }
 
-        $token = $options['token'] ?? $this->token;
+        $token = array_key_exists('token', $options) ? $options['token'] : $this->token;
         if (is_string($token) && $token !== '') {
             $headers['Authorization'] = 'Bearer ' . $token;
         }
 
-        $productId = $options['product_id'] ?? $this->productId;
+        $productId = array_key_exists('product_id', $options) ? $options['product_id'] : $this->productId;
         if (is_string($productId) && $productId !== '') {
             $headers['X-Product-ID'] = $productId;
         }

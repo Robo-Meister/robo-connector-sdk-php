@@ -5,7 +5,7 @@ Lightweight PHP SDK for Robo Connector APIs. This package is framework-free and 
 ## Install
 
 ```bash
-composer require robo/robo-connector-sdk
+composer require robo-meister/robo-connector-api
 ```
 
 ## Coverage snapshot (SDK vs routes vs OpenAPI)
@@ -292,6 +292,51 @@ $query = $client->queryCalendar([
     'from' => '2026-01-01T00:00:00Z',
     'to' => '2026-01-31T23:59:59Z',
 ]);
+```
+
+
+### Universal Input suggestions, logs, and requests
+
+```php
+$suggestions = $client->suggestUniversalInput([
+    'command' => 'Show overdue supplier invoices',
+    'module' => 'finance',
+    'limit' => 5,
+    'execute_telemetry' => true,
+], idempotencyKey: 'ui-'.bin2hex(random_bytes(8)));
+
+$client->recordUniversalInputHistory([
+    'command' => 'Show overdue supplier invoices',
+    'module' => 'finance',
+]);
+
+$client->recordUniversalInputFeedback([
+    'query' => 'Show overdue supplier invoices',
+    'suggestion_key' => $suggestions['suggestions'][0]['key'] ?? 'finance.overdue_supplier_invoices',
+    'accepted' => true,
+    'correlation_id' => $suggestions['meta']['correlation_id'] ?? null,
+]);
+
+$executionLogs = $client->listUniversalInputExecutionLogs([
+    'limit' => 20,
+    'status' => 'executed',
+]);
+
+$aiResponse = $client->sendUniversalInputRequest([
+    'command' => 'Draft the next supplier follow-up',
+    'mode' => 'confirm_then_ask',
+]);
+```
+
+Providers that feed ecosystem-wide cards or signals can also post signed universal ingestion events:
+
+```php
+$client->sendUniversalInputIngestion(
+    'wallet-provider',
+    'wallet.updated',
+    $_ENV['UNIVERSAL_INPUT_SECRET'],
+    ['schemaVersion' => '1.0', 'wallet' => ['balance' => 1200, 'currency' => 'USD']]
+);
 ```
 
 ### 6) Document templates and OCR review
